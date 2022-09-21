@@ -2,6 +2,8 @@ package com.pragma.pragma.services;
 
 import com.pragma.pragma.models.UserDb;
 import com.pragma.pragma.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -11,8 +13,10 @@ import java.util.Optional;
 @Transactional
 public class UserServicesImpl implements UserServices {
 
-    final
-    UserRepository userRepository;
+    final UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public UserServicesImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -31,12 +35,39 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public UserDb save(UserDb entity) {
-        return userRepository.save(entity);
+
+
+        UserDb userDb = UserDb.builder()
+                .address(entity.getName())
+                .email(entity.getEmail())
+                .name(entity.getName())
+                .lastName(entity.getLastName())
+                .phoneNumber(entity.getPhoneNumber())
+                .password(passwordEncoder.encode(entity.getPassword()))
+                .build();
+        return userRepository.save(userDb);
     }
 
     @Override
     public void deleteById(Integer id) {
         userRepository.deleteById(id);
+
+    }
+
+    boolean validateUser(UserDb userDb) {
+
+        boolean isAnyNull = false;
+        if (userDb.getName() == null || userDb.getLastName() == null
+                || userDb.getEmail() == null
+                || userDb.getAddress() == null
+                || userDb.getPhoneNumber() == null
+                || userDb.getPassword() == null
+        ) {
+            isAnyNull = true;
+
+        }
+
+        return isAnyNull;
 
     }
 

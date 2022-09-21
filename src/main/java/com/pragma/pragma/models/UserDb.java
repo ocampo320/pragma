@@ -1,10 +1,7 @@
 package com.pragma.pragma.models;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,17 +13,23 @@ import javax.persistence.Id;
 @Setter
 @Entity
 @AllArgsConstructor
+@Builder(toBuilder = true)
 public class UserDb {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NonNull
     private String name;
+    @NonNull
     private String lastName;
+    @NonNull
     private String phoneNumber;
+    @NonNull
     private String address;
+    @NonNull
     private String email;
+    @NonNull
     private String password;
-
     public UserDb() {
 
     }
