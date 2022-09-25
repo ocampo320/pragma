@@ -2,6 +2,7 @@
  
 En este poyecto se esta exponiendo un servicio para registrar un usuario.
 
+
 ~~~
 curl --location --request POST 'localhost:8185/api/pragma/create' \
 --header 'Content-Type: application/json' \
@@ -13,5 +14,14 @@ curl --location --request POST 'localhost:8185/api/pragma/create' \
 "email":"telecentro.lasierra@gmail.com",
 "password":"Deivi3npc7odo5su2*"
 }'
+~~~
+
+Cuando el usuario ingresa un correo  que no cumple con las caracteristicas:
+~~~
+Error en el correo
+~~~
+Cuando el usuario ingresa una contrasena  que no cumple con las caracteristicas:
+~~~
+Error la password
 ~~~
 
