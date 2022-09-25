@@ -3,48 +3,45 @@ package com.pragma.pragma.controller;
 import com.pragma.pragma.models.UserDb;
 import com.pragma.pragma.repository.UserRepository;
 import com.pragma.pragma.services.UserServicesImpl;
-import org.hibernate.service.spi.InjectService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class UserControllerTest {
+    @InjectMocks
+    UserServicesImpl userServices;
 
-@Mock
-UserRepository userRepository;
 
-@Mock
-UserServicesImpl userServices;
+    @Mock
+    UserRepository userRepository;
 
-@InjectMocks
-UserController userController;
+
     @Test
-    void saveUSer(){
+    void saveUSer() {
+        UserDb userDb =  UserDb.builder()
+                .name("deivi")
+                .lastName("lopez")
+                .password("222222")
+                .phoneNumber("22222")
+                .address("cr 3 este")
+                .email("d@d.com")
+                .build();
+        when(userRepository.save(any(UserDb.class))).thenReturn(userDb);
 
+        UserDb u = userServices.save(userDb);
 
-        //Give
-        UserDb userDb= new UserDb();
-        userDb.setName("deivi");
-        userDb.setLastName("lopez");
-        userDb.setPassword("222222");
-        userDb.setAddress("cr 3 este");
-        userDb.setEmail("d@d.com");
-
-
-
-        //When
-        when(userRepository.save(any(UserDb.class)));
-
-        UserDb u=userServices.save(userDb);
-
-        //Then
-        Assertions.assertNotNull(userDb);
+        Assertions.assertNotNull(u);
+        assertEquals(userDb.getName(), u.getName());
+        verify(userRepository, times(1)).save(any(UserDb.class));
+        verifyNoMoreInteractions(userRepository);
 
 
     }

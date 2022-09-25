@@ -30,6 +30,7 @@ public class UserDb {
     private String email;
     @NonNull
     private String password;
+
     public UserDb() {
 
     }

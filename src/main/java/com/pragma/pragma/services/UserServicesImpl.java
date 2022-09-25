@@ -35,15 +35,13 @@ public class UserServicesImpl implements UserServices {
 
     @Override
     public UserDb save(UserDb entity) {
-
-
         UserDb userDb = UserDb.builder()
                 .address(entity.getName())
                 .email(entity.getEmail())
                 .name(entity.getName())
                 .lastName(entity.getLastName())
                 .phoneNumber(entity.getPhoneNumber())
-                .password(passwordEncoder.encode(entity.getPassword()))
+                .password(entity.getPassword())
                 .build();
         return userRepository.save(userDb);
     }
@@ -53,23 +51,4 @@ public class UserServicesImpl implements UserServices {
         userRepository.deleteById(id);
 
     }
-
-    boolean validateUser(UserDb userDb) {
-
-        boolean isAnyNull = false;
-        if (userDb.getName() == null || userDb.getLastName() == null
-                || userDb.getEmail() == null
-                || userDb.getAddress() == null
-                || userDb.getPhoneNumber() == null
-                || userDb.getPassword() == null
-        ) {
-            isAnyNull = true;
-
-        }
-
-        return isAnyNull;
-
-    }
-
-
 }
